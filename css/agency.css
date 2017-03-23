@@ -555,7 +555,7 @@ aside.clients img {
 }
 section#contact {
   background-color: #222222;
-  background-image: url('../img/map-image.png');
+  background-image: url('../img/contact-bg.png');
   background-position: center;
   background-repeat: no-repeat;
 }
@@ -743,4 +743,8 @@ img::-moz-selection {
 }
 body {
   webkit-tap-highlight-color: #fed136;
+}
+
+a.footer-link {
+    color:darkslategrey;
 }

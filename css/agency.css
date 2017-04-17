@@ -8,7 +8,7 @@ body {
   font-family: "Roboto Slab", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .text-muted {
-  color: #777777;
+  color: #555555;
 }
 .text-primary {
   color: #fed136;
@@ -226,7 +226,6 @@ fieldset[disabled] .btn-xl.active {
   }
 }
 header {
-  background-image: url('../img/header-bg.jpg');
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-position: center center;
@@ -289,7 +288,7 @@ section h3.section-subheading {
   font-size: 16px;
   font-family: "Droid Serif", "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-transform: none;
-  font-style: italic;
+  font-style: none;
   font-weight: 400;
   margin-bottom: 75px;
 }
@@ -747,4 +746,14 @@ body {
 
 a.footer-link {
     color:darkslategrey;
+}
+
+section h3.contact-subheading {
+    font-size: 16px;
+    font-family: "Droid Serif", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    text-transform: none;
+    font-style: italic;
+    font-weight: 400;
+    margin-bottom: 75px;
+    color : lightgrey;
 }

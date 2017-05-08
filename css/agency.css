@@ -9,6 +9,7 @@ body {
 }
 .text-muted {
   color: #555555;
+  text-align="justify";
 }
 .text-primary {
   color: #fed136;
@@ -241,7 +242,7 @@ header .intro-text {
   padding-bottom: 50px;
 }
 header .intro-text .intro-lead-in {
-  font-family: "Droid Serif", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Droid Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-style: ;
   font-size: 22px;
   line-height: 22px;
@@ -745,7 +746,7 @@ body {
 }
 
 a.footer-link {
-    color:darkslategrey;
+    color:goldenrod;
 }
 
 section h3.contact-subheading {
@@ -757,3 +758,15 @@ section h3.contact-subheading {
     margin-bottom: 75px;
     color : lightgrey;
 }
+
+
+
+
+
+.list-item {
+    padding-top: 0.5cm;
+    font-weight:bold;
+    font-size: 20px;
+}
+
+

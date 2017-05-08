@@ -8,7 +8,7 @@
 
     $(window).bind("mousewheel mousedown DOMMouseScroll keyup", function () {$("html, body").stop(); });
     
-    $(window).scroll(function () {    
+    $(window).scroll(function () {
     var x = $(window).scrollTop();
     if (x >= 100) {
         $(".navbar-brand").show();

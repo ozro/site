@@ -755,7 +755,7 @@ section h3.contact-subheading {
     text-transform: none;
     font-style: italic;
     font-weight: 400;
-    margin-bottom: 75px;
+    margin-bottom: 40px;
     color : lightgrey;
 }
 
@@ -770,3 +770,13 @@ section h3.contact-subheading {
 }
 
 
+
+section h4.contact-link {
+        font-size: 20px;
+    font-family: "Droid Serif", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    text-transform: none;
+    font-style: italic;
+    font-weight: 400;
+    margin-bottom: 40px;
+    color : inherit;
+}

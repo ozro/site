@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>16-264: Humanoids Vision Project</title>    
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="col-md-8 offset-md-2">
+        <h1>Plank Detection Project</h1>
+        <hr>
+        <h2>Objective</h2>
+        <p>The goal of the project is to detect colored Keva planks in images and determine their positions and orientations. Below is an example of a single unpainted Keva plank. The task will be to determine the pose of this plank relative to the camera.</p>
+
+        <p>However, the real environment will be a lot more complicated with many more Keva planks. In the real environment, the planks may be partially occluded with varying lighting. The background of the image may also be complex. This increases the difficulty of detecting plank poses.</p>
+        <figure style="text-align: center">
+            <img class="img-responsive" src="plank.png"/>
+            <figcaption>
+                An unpainted Keva plank
+            </figcaption>
+        </figure>
+        <figure style="text-align: center">
+            <img class="img-responsive" src="img.png"/>
+            <figcaption>
+                A pile of painted Keva planks
+            </figcaption>
+        </figure>
+        <hr>
+        <h2>Approach</h2>
+        <p>We can define a plank as a set of straight lines that meet at eight vertices. For our detection purposes, we can fully define a plank if we can see three orthogonal lines meeting at a vertex. Because we know the exact dimensions of the plank, we can figure out its pose. The main procedure follows these steps:</p>
+            <ol>
+                <li>Preprocess the image</li>
+                <li>Detect corners in the image</li>
+                <li>Detect lines emanating from each corner</li>
+                <li>Find vertices where three lines meet</li>
+                <li>Find full lines that connect two vertices</li>
+                <li>Find vertices where three full lines meet</li>
+                <li>Generate plank pose</li>
+            </ol>
+        <hr>
+        <h2>Image Preprocessing</h2>
+        <p>We can take advantage of the planks' coloring to perform color thresholding. We can select only pixels that are green, red or blue, removing most of the background. We then use a Gaussian filter to reduce the noise in the image.</p>
+        <figure style="text-align: center">
+            <img class="img-responsive" src="masked.png"/>
+            <figcaption>
+                Image after color thresholding
+            </figcaption>
+        </figure>
+        <hr>
+        <h2>Corner Detection</h2>
+        <p>We can perform corner detection on a grayscale version of the input image. MATLAB provides inbuilt functions that performs this detection using the Harris corner detector. The results are very good on the single plank image.</p>
+        <figure style="text-align: center">
+            <img class="img-responsive" src="corners.png"/>
+            <figcaption>
+                Corner detection on single plank
+            </figcaption>
+        </figure>
+        <p>However, results are not consistent. In the pile of planks image, many points along edges have also been marked as corners. Luckily, this does not affect our algorithm since we have a pruning step where corners that are not vertices are removed.</p>
+        <figure style="text-align: center">
+            <img class="img-responsive" src="masked_corners.png"/>
+            <figcaption>
+                Corner detection on pile of planks
+            </figcaption>
+        </figure>
+        <hr>
+        <h2>Patch Line Detection</h2>
+        <p>The next step would be to extract an image patch at each corner and run an edge detector. Then we can use the Hough transform to extract lines.</p>
+        <figure style="text-align: center">
+            <img class="img-responsive" src="patches.png"/>
+            <img class="img-responsive" src="corner_patches.png"/>
+            <figcaption>
+                Extracted patches and lines
+            </figcaption>
+        </figure>
+        <hr>
+        <h2>Correlate Lines</h2>
+        <p>Using the set of patches and corresponding lines from the previous step, we can try to correlate lines and find pairs of vertices that are joined by a line. This line would be considered a "full line". </p>
+        <p>Each vertex connected to three full lines can define a plank.</p>
+        <hr>
+        <h2>Generate Plank Poses</h2>
+        <p>We can use line geometries to determine the pose of the plank.</p>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

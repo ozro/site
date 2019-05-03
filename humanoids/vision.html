@@ -12,6 +12,7 @@
 <body>
     <div class="col-md-8 offset-md-2">
         <h1>Plank Detection Project</h1>
+        <p>By Oliver Zhang</p>
         <hr>
         <h2>Objective</h2>
         <p>The goal of the project is to detect colored Keva planks in images and determine their positions and orientations. Below is an example of a single unpainted Keva plank. The task will be to determine the pose of this plank relative to the camera.</p>
@@ -66,9 +67,10 @@
                 Corner detection on pile of planks
             </figcaption>
         </figure>
+        
         <hr>
         <h2>Patch Line Detection</h2>
-        <p>The next step would be to extract an image patch at each corner and run an edge detector. Then we can use the Hough transform to extract lines.</p>
+        <p>The next step would be to extract an image patch at each corner and run an edge detector. Then we can use the Hough transform to extract lines. The lines will be expressed with slope and intercept in the image coordinates. This allows us to compare lines from different patches and determine if they represent the same edge of the plank.</p>
         <figure style="text-align: center">
             <img class="img-responsive" src="patches.png"/>
             <img class="img-responsive" src="corner_patches.png"/>
@@ -76,13 +78,49 @@
                 Extracted patches and lines
             </figcaption>
         </figure>
+        
         <hr>
         <h2>Correlate Lines</h2>
-        <p>Using the set of patches and corresponding lines from the previous step, we can try to correlate lines and find pairs of vertices that are joined by a line. This line would be considered a "full line". </p>
-        <p>Each vertex connected to three full lines can define a plank.</p>
+        <p>Using the set of patches and corresponding lines from the previous step, we can try to correlate lines and find pairs of vertices that are joined by a line. This line would be able to define an edge of a plank. </p>
+
+        <p>In the figure below, the dotted green lines represent all detected lines. The yellow lines represent correlated lines that connect the vertices marked by yellow dots. </p>
+        <figure style="text-align: center">
+            <img class="img-responsive" src="correlated.png"/>
+            <figcaption>
+                Correlated lines
+            </figcaption>
+        </figure>
+        <p>We can select vertices with three or more correlated lines. These are marked with cyan dots in the figure below. For this image, we can detect two vertices with three connected edges. Now we can use the angle between the lines and the length of each line to determine the pose of the plank.</p>
+        <figure style="text-align: center">
+            <img class="img-responsive" src="valid.png"/>
+            <figcaption>
+                Detected Vertices
+            </figcaption>
+        </figure>
+        <p>During this step we can also prune all vertices that lie on a line between two other points. This ensures we only consider correct vertices that are on corners, and any point lying on the middle of an edge is rejected.</p>
+        <figure style="text-align: center">
+            <img class="img-responsive" src="pruning.png"/>
+            <figcaption>
+                Pruning edge points
+            </figcaption>
+        </figure>
         <hr>
-        <h2>Generate Plank Poses</h2>
-        <p>We can use line geometries to determine the pose of the plank.</p>
+        <h2>Limitations</h2>
+        <p>The pose estimator still performs poorly with mutliple planks present because of complications such as occlusion. The other big challenge is pruning incorrect lines that connect vertices from different planks. The figure below shows a more difficult image with three planks. Only one is fully visible, with the other two partially occluded. </p>
+        <figure style="text-align: center">
+            <img class="img-responsive" src="failed.png"/>
+            <figcaption>
+                Incorrectly detected lines
+            </figcaption>
+        </figure>
+        <p>Several parts of the pipeline can be optimized to improve the results. One of the most important parts is to improve the corner detector so all corners are captured and all points lying on edges are rejected. Then, the edge detector can be improved so all edges are captured accurately. We can see that in the figure entire edges on the planks are not captured. </p>
+        <p>There is also a limitation in pose estimation. The camera has perspective, and lines parallel in 3D may not be parallel in the image. In the single plank image we can clearly see that there are several vanishing points where lines point towards. To estimate the pose accurately, we need to find the camera intrinsics.</p>
+        <figure style="text-align: center">
+            <img class="img-responsive" src="valid.png"/>
+            <figcaption>
+                Perspective lines
+            </figcaption>
+        </figure>
     </div>
     
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
